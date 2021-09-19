@@ -35,6 +35,17 @@
         </div>
         <audio src="./songs/Song1.mp3"></audio>
 
+        <!-- progress-bar -->
+        <div class="progressbar_container" id="progress_container">
+          <div class="progress_duration_meter">
+            <div id="current_time">0.00</div>
+            <div id="duration">37:13</div>
+          </div>
+          <div class="progress_div" id="progress_div">
+            <div class="progress" id="progress"></div>
+          </div>
+        </div>
+
         <!-- controls -->
         <div class="music_controls">
           <i class="fas fa-backward" id="prev" title="Previous"></i>
@@ -51,6 +62,10 @@
       const title = document.getElementById("title");
       const prev = document.getElementById("prev");
       const next = document.getElementById("next");
+
+      let progress = document.getElementById("progress");
+      let total_duration = document.getElementById("duration");
+      let current_time = document.getElementById("current_time");
 
       const songs = [
         {
@@ -122,6 +137,33 @@
         loadSong(songs[songIndex]);
         playMusic();
       };
+
+      // progess js work
+      music.addEventListener("timeupdate", (event) => {
+        const { currentTime, duration } = event.srcElement;
+        let progress_time = (currentTime / duration) * 100;
+        progress.style.width = `${progress_time}%`;
+
+        // music duration update
+
+        let mins = Math.floor(duration / 60);
+        let secs = Math.floor(duration % 60);
+
+        let tot_duration = `${mins}:${secs}`;
+
+        if (duration) {
+          total_duration.textContent = `${tot_duration}`;
+        }
+        mins = Math.floor(currentTime / 60);
+        secs = Math.floor(currentTime % 60);
+
+        tot_currtime = `${mins}:${secs}`;
+
+        if (currentTime) {
+          current_time.textContent = `${tot_currtime}`;
+        }
+      });
+
       next.addEventListener("click", nextSong);
       prev.addEventListener("click", prevSong);
     </script>
